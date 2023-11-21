@@ -1,0 +1,176 @@
+[gd_scene load_steps=11 format=3 uid="uid://doso56ghpxdbv"]
+
+[ext_resource type="Shader" path="res://scene/timetxt.gdshader" id="1_wvwq4"]
+[ext_resource type="Texture2D" uid="uid://b28rkpim5g222" path="res://assets/bg.png" id="2_e3ito"]
+[ext_resource type="Texture2D" uid="uid://cteekooxnk4h4" path="res://assets/score.png" id="3_b8t0u"]
+[ext_resource type="Texture2D" uid="uid://bpldhu8dcs2br" path="res://assets/popcamp1.png" id="3_w70ti"]
+[ext_resource type="AudioStream" uid="uid://jax2wqagvixa" path="res://assets/blipSelect.wav" id="5_0wgxc"]
+
+[sub_resource type="GDScript" id="GDScript_x3wft"]
+script/source = "extends Node2D
+
+
+var time = 0
+var timeout = 2000
+var gamestar = false
+
+
+#shake when click var
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	# reset time when in this tscn
+	pass
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	if gamestar:
+		time += delta
+		var mils =  1000 - fmod(time,1)*1000 
+		var secs = fmod(timeout,60) - fmod(time,60)
+		# when time out change tscn
+		if floor(secs) <= -1 :
+			get_tree().change_scene_to_file(\"res://scene/timeout.tscn\")
+		var time_passed = \"%02d : %03d\" % [secs,mils]
+		$Canva1/TimerText.text = str(time_passed)	
+
+func _input(event):
+	# when press anything it will run
+	if Input.is_action_just_pressed(\"ui_pop\"):
+		gamestar = true
+		Global.score += 1
+		$Popcamp.texture = preload(\"res://assets/popcamp2.png\")
+		$Canva1/ScoreText.text = str(Global.score)
+		$Canva1/howto.visible = false
+		#change img back to normal 
+		$Poptime.wait_time = 0.1
+		$Poptime.start()
+		$AnimationPlayer.play(\"shake\")
+		$AudioStreamPlayer2D.play()
+	
+func _on_poptime_timeout():
+	$Popcamp.texture = preload(\"res://assets/popcamp1.png\")
+	$Poptime.stop()
+
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y6tns"]
+shader = ExtResource("1_wvwq4")
+shader_parameter/height = 3.0
+shader_parameter/frequency = 20.0
+shader_parameter/speed = 3.0
+
+[sub_resource type="Animation" id="Animation_aw341"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(638, 360)]
+}
+
+[sub_resource type="Animation" id="Animation_tr5gw"]
+resource_name = "shake"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(638, 360), Vector2(644.785, 355.345), Vector2(633.39, 360), Vector2(638, 360)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ukxb2"]
+_data = {
+"RESET": SubResource("Animation_aw341"),
+"shake": SubResource("Animation_tr5gw")
+}
+
+[node name="Node2D" type="Node2D"]
+script = SubResource("GDScript_x3wft")
+
+[node name="Canva1" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="TimerText" type="Label" parent="Canva1"]
+material = SubResource("ShaderMaterial_y6tns")
+offset_left = 28.0
+offset_top = 22.0
+offset_right = 452.0
+offset_bottom = 187.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 35
+text = "20:00"
+metadata/_edit_lock_ = true
+
+[node name="howto" type="Label" parent="Canva1"]
+offset_left = 4.0
+offset_top = 693.0
+offset_right = 260.0
+offset_bottom = 712.0
+text = "click and press anything to start"
+
+[node name="ScoreText" type="Label" parent="Canva1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.0
+offset_top = 262.99
+offset_right = 27.0
+offset_bottom = 352.99
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 86
+text = "0"
+
+[node name="Bg" type="Sprite2D" parent="."]
+position = Vector2(641, 357)
+scale = Vector2(6, 6)
+texture = ExtResource("2_e3ito")
+metadata/_edit_lock_ = true
+
+[node name="Popcamp" type="Sprite2D" parent="."]
+position = Vector2(640, 335)
+scale = Vector2(5, 5)
+texture = ExtResource("3_w70ti")
+metadata/_edit_lock_ = true
+
+[node name="Score" type="Sprite2D" parent="."]
+position = Vector2(641, 360)
+scale = Vector2(5, 5)
+texture = ExtResource("3_b8t0u")
+metadata/_edit_lock_ = true
+
+[node name="Poptime" type="Timer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(638, 360)
+metadata/_edit_group_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ukxb2")
+}
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_0wgxc")
+
+[connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]
+[connection signal="timeout" from="Poptime" to="." method="_on_poptime_timeout"]

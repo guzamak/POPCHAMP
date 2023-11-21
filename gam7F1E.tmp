@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://doso56ghpxdbv"]
+
+[sub_resource type="GDScript" id="GDScript_x3wft"]
+script/source = "extends Node2D
+
+var score = 0
+var sec = 0
+var milisec = 0
+var reset_sec = 20
+var reset_mili = 0
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	# reset time when in this tscn
+	reset_time() 
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+		pass
+
+
+func _input(event):
+	# when press anything it will run
+	if Input.is_action_just_pressed(\"ui_pop\"):
+		score += 1
+		$Canva1/ScoreText.text = str(score)
+
+
+func _on_timer_timeout():
+	print(\"tse\")
+
+func reset_time():
+	sec = reset_sec
+	milisec = reset_mili
+"
+
+[node name="Node2D" type="Node2D"]
+script = SubResource("GDScript_x3wft")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 3.05176e-05)
+scale = Vector2(1, 1)
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Canva1" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="TimerText" type="RichTextLabel" parent="Canva1"]
+offset_left = 576.0
+offset_top = 185.0
+offset_right = 616.0
+offset_bottom = 225.0
+
+[node name="ScoreText" type="RichTextLabel" parent="Canva1"]
+anchors_preset = -1
+anchor_left = -0.0104167
+anchor_right = 0.00247828
+offset_left = 588.0
+offset_top = 185.0
+offset_right = 629.145
+offset_bottom = 231.0
+scale = Vector2(1.55, 1.559)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+bbcode_enabled = true
+text = "0"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="item_rect_changed" from="." to="." method="_on_item_rect_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
