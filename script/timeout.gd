@@ -5,7 +5,7 @@ extends Node2D
 func _ready():
 	$Canva1/ScoreText.text = str(Global.score)
 	if Global.score > 300:
-		$Canva1/Heading.text = "COME HERE MY LITTE POPCAMP "
+		$Canva1/Heading.text = "COME HERE MY LITTE POPCHAMP "
 		
 	else:
 		$Canva1/Heading.text = "YOU SUCK !!!"
