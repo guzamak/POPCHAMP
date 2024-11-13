@@ -11,7 +11,7 @@ script/source = "extends Node2D
 
 
 var time = 0
-var timeout = 2000
+var timeout = 20
 var gamestar = false
 
 
@@ -28,7 +28,7 @@ func _process(delta):
 	if gamestar:
 		time += delta
 		var mils =  1000 - fmod(time,1)*1000 
-		var secs = fmod(timeout,60) - fmod(time,60)
+		var secs = timeout - fmod(time,60)
 		# when time out change tscn
 		if floor(secs) <= -1 :
 			get_tree().change_scene_to_file(\"res://scene/timeout.tscn\")

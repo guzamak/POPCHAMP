@@ -63,6 +63,7 @@ theme_override_font_sizes/font_size = 61
 text = "THIS IS HEADING"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="ScoreText" type="Label" parent="Canva1"]
 anchors_preset = -1
@@ -79,6 +80,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 50
 text = "0"
+metadata/_edit_use_anchors_ = true
 
 [node name="ScoreLabel" type="Label" parent="Canva1"]
 anchors_preset = 8
@@ -95,6 +97,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 50
 text = "SCORE
 "
+metadata/_edit_use_anchors_ = true
 
 [node name="TextureButton" type="TextureButton" parent="Canva1"]
 offset_left = 432.8
@@ -104,6 +107,7 @@ offset_bottom = 454.8
 scale = Vector2(5, 5)
 texture_normal = ExtResource("2_8hsuh")
 script = ExtResource("1_3dr2w")
+metadata/_edit_use_anchors_ = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Canva1/TextureButton"]
 position = Vector2(-0.759995, -69.36)
@@ -126,6 +130,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 45
 text = "Play again
 "
+metadata/_edit_use_anchors_ = true
 
 [node name="Bg" type="Sprite2D" parent="."]
 position = Vector2(641, 357)
